@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>JQUERY</title>
+</head>
+<body>
+    <div class="container">
+
+
+        <h1>ТЕМА: ОБРАБОТКА СОБЫТИЙ</h1>
+        <section class="section1">
+            <h3>Только буквы английского и русского алфавита в поле input (убирает цифры если обновить страницу)</h3>
+                <input type="text" class="i-1" id="elem" pattern='/[^a-zа-яё\s]/gi'>
+            <div class="out-1"></div>
+            <script>
+                document.querySelector('.i-1').value = document.querySelector('.i-1').value.replace(/[^a-zа-яё\s]/gi, '');
+            </script>
+        
+            <h3>Задание 1. Создать html-страницу для ввода имени пользователя.
+                Необходимо проверять каждый символ, который вводит поль
+                зователь. Если он ввел цифру, то не отображать ее в input.</h3>
+            <input type="text" class="input-words" placeholder="Буквы английского и русского алфавита">
+        </section>
+        <section class="section2">
+            <h3>Задание 2. Создать html-страницу с кнопкой Открыть и модальным
+                окном. На модальном окне должен быть текст и кнопка Закрыть.
+                Изначально модальное окно не отображается. При клике на
+                кнопку Открыть появляется модальное окно, на кнопку Закрыть –
+                исчезает.</h3>
+            <input value="Нажми меня" onclick="alert('Клик!')" type="button" >
+             
+            <!--// $('body').on('input', '.input-words', function(){
+                
+                // 	this.value = this.value.replace(/[^a-zа-яё\s]/gi, '');
+                
+                // }); -->
+        
+            <button id="btn">Нажми и текст исчезнет</button>
+            <div class="text">Text</div>
+            <script>
+                btn.onclick = unvisibleText;
+                function unvisibleText () {
+	
+	                document.querySelector('.text').innerHTML = " ";
+                }
+            </script>
+        </section>
+        <section class="section3">
+            <h3>Задание 3.
+                Создать html-страницу с футбольным полем, которое зани-
+                мает всю ширину и высоту экрана, и мячом размером 100 на 100
+                пикселей.
+                Сделать так, чтобы при клике мышкой по полю, мяч плавно
+                перемещался на место клика. Учтите: необходимо, чтобы центр
+                мяча останавливался именно там, где был совершен клик мышкой.
+                Также предусмотрите, чтобы мяч не выходил за границы поля</h3>
+            <div id="field" style="position: relative; width: 300px; height: 200px; background-color: rgb(91, 182, 50);">
+            <div id="ball" style="transition: 1s all; position: absolute; height: 30px; width: 30px; background-color: #fff; border: 2px solid black; border-radius: 50%;"></div>
+            </div>
+            <div class="text-click"></div>
+            <script>
+                
+                field.onclick = function(event) {
+
+                // координаты поля относительно окна браузера
+                let fieldCoords = field.getBoundingClientRect();
+
+                // мяч имеет абсолютное позиционирование (position:absolute), поле - относительное (position:relative)
+                // таким образом, координаты мяча рассчитываются относительно внутреннего, верхнего левого угла поля
+                let ballCoords = {
+                top: event.clientY - fieldCoords.top - field.clientTop - ball.clientHeight / 2,
+                left: event.clientX - fieldCoords.left - field.clientLeft - ball.clientWidth / 2
+                };
+
+                // запрещаем пересекать верхнюю границу поля
+                if (ballCoords.top < 0) ballCoords.top = 0;
+
+                // запрещаем пересекать левую границу поля
+                if (ballCoords.left < 0) ballCoords.left = 0;
+
+
+                // // запрещаем пересекать правую границу поля
+                if (ballCoords.left + ball.clientWidth > field.clientWidth) {
+                ballCoords.left = field.clientWidth - ball.clientWidth;
+                }
+
+                // запрещаем пересекать нижнюю границу поля
+                if (ballCoords.top + ball.clientHeight > field.clientHeight) {
+                ballCoords.top = field.clientHeight - ball.clientHeight;
+                }
+
+                ball.style.left = ballCoords.left + 'px';
+                ball.style.top = ballCoords.top + 'px';
+                }
+                
+                // field.onclick = function (event) {
+                //     let fieldCoords = field.getBoundingClientRect();
+                //     ball.style.left = event.clientX - fieldCoords.left - field.clientLeft + "px";
+                //     ball.style.top = event.clientY - fieldCoords.left - field.clientLeft + "px";
+	            //     // document.querySelector('.text-click').innerHTML = "Координаты x: " + event.clientX + "y: " + event.clientY;
+                //     // if (event.pageX >= 467) {
+                //     //     boll.style.left = `${event.pageX-30}px`;
+                //     //     boll.style.top = `${event.pageY-15}px`;
+                //     // } else if (event.pageX <= 200) {
+                //     //     boll.style.left = `${event.pageX}px`;
+                //     //     boll.style.top = `${event.pageY-15}px`;
+                //     // }
+                //     // else {
+                //     //     boll.style.top = `${event.pageY-15}px`;
+                //     //     boll.style.left = `${event.pageX-15}px`;
+                //     // }   
+                // }
+            </script>
+
+        </section>
+        <section class="section4">
+                <h3>Задание 4.
+                    Создать html-страницу со светофором и кнопкой, которая
+                    переключает светофор на следующий цвет.</h3>
+                    <div id="traffic-lights" style="display: flex; flex-direction: column; align-items: center; justify-content: space-around; width: 90px; height: 300px; background-color: rgb(100, 96, 96); border-radius: 5px;">
+                    <div id="lightsRed" class="lights black" style="transition: 1s all;height: 50px; width: 50px;
+                      border: 1px solid black; border-radius: 50%;"></div>
+                    <div id="lightsOrange" class="lights black" style="transition: 1s all;height: 50px; width: 50px;
+                      border: 1px solid black; border-radius: 50%;"></div>
+                    <div id="lightsGreen" class="lights black" style="transition: 1s all;height: 50px; width: 50px;
+                      border: 1px solid black; border-radius: 50%;"></div>
+                    <button id="next" style="width: 85px; height: 30px;">next</button>
+                    </div>
+            <script>
+            next.addEventListener('click', nextLight);
+            var lightsColor = ["red","orange","green"];
+            var countClicks = 0;
+            
+             function nextLight () {
+                    switch(countClicks) {
+                        case 0 : {
+                            lightsRed.style.backgroundColor = lightsColor[countClicks];
+                            lightsRed.style.boxShadow = '-2px 1px 51px 12px rgba(255, 0, 0, 0.2)';
+                            lightsGreen.style.boxShadow = '';
+                            lightsOrange.style.backgroundColor = 'black';
+                            lightsGreen.style.backgroundColor = 'black';
+                            countClicks ++;
+                        }
+                        break;
+                        case 1 : {
+                            lightsRed.style.backgroundColor = 'black';
+                            lightsOrange.style.backgroundColor = lightsColor[countClicks];
+                            lightsOrange.style.boxShadow = '-2px 1px 51px 12px rgba(255, 165, 0, 0.2)';
+                            lightsRed.style.boxShadow = '';
+                            lightsGreen.style.backgroundColor = 'black';
+                            countClicks ++;
+                        }
+                        break;
+                        case 2 : {
+                            lightsRed.style.backgroundColor = 'black';
+                            lightsOrange.style.backgroundColor = 'black';
+                            lightsGreen.style.backgroundColor = lightsColor[countClicks];
+                            lightsGreen.style.boxShadow = '-2px 1px 51px 12px rgba(0, 128, 0, 0.2)';
+                            lightsOrange.style.boxShadow = '';
+                            countClicks ++;
+                        }
+                        break;
+                        case 3 : {
+                            countClicks = 0;
+                        }
+                        break;
+                    }                   
+             }
+            </script>
+        </section>
+        <section class="section5">
+            <h3>Задание 5
+                Создать html-страницу со списком книг.
+                При щелчке на книгу, цвет фона должен меняться на оранжевый.
+                Учтите, что при повторном щелчке на другую книгу, предыдущей –
+                необходимо возвращать прежний цвет.</h3>
+
+                <ol id="list">
+                    <li >Lorem ipsum dolor sit amet consectetur adipisicing.</li>
+                    <li >Doloremque facilis, in laboriosam ex dolores repellat.</li>
+                    <li >Qui iure assumenda maxime, expedita minima quia.</li>
+                    <li >Optio a non libero ea consequuntur veniam!</li>
+                    <li >Adipisci id quam quo, quasi ullam ipsa?</li>
+                    <li >Repellendus totam debitis velit ipsum rem qui!</li>
+                    <li >Expedita, rem exercitationem fugiat ipsam incidunt eveniet.</li>
+                </ol>
+
+                <script>
+                    let list = document.getElementById('list');
+	 
+                    let selectedLi;
+
+                    list.onclick = function(event) {
+                        let target = event.target;
+
+                        while (target != this) {
+                        if (target.tagName == 'LI') {
+                            highlight(target);
+                            return;
+                        }
+                        target = target.parentNode;
+                        }
+                    }
+
+                    function highlight(node) {
+                        if (selectedLi) {
+                        selectedLi.classList.remove('highlight');
+                        }
+                        selectedLi = node;
+                        selectedLi.classList.add('highlight');
+                    }
+                </script>
+        </section>
+        <section class="section7">
+            <h3>Задание 7
+                Создать html-страницу с деревом вложенных директорий.
+                При клике на элемент списка, он должен сворачиваться или
+                разворачиваться. При наведении на элемент, шрифт должен ста-
+                новится жирным (с помощью CSS).</h3>
+                
+                    
+                    <ul class="list-tree" id="list_tree">
+                        <li>Звери
+                            <ul>
+                                <li>Кошечка
+                                    <ul>
+                                        <li>Дворовая</li>
+                                        <li>Персидская</li>
+                                    </ul>
+                                </li>
+                                <li>Собачка
+											  <ul>
+												  <li>Рыжая</li>
+												  <li>В крапинку</li>
+											  </ul>
+										  </li>
+                                <li>Уточка</li>
+                            </ul>
+                        </li>
+                        <li>Машины
+                            <ul>
+                                <li>Кофемашина</li>
+                                <li>Стиральная машина</li>
+                                <li>Субару</li>
+                            </ul>
+                        </li>
+                    </ul>
+    
+                <script>
+      // поместить все текстовые узлы в элемент <span>
+    // он занимает только то место, которое необходимо для текста
+    for (let li of list_tree.querySelectorAll('li')) {
+   	let span = document.createElement('span');
+      li.prepend(span);
+      span.append(span.nextSibling); // поместить текстовый узел внутрь элемента <span>
+    }
+
+    //  ловим клики на всём дереве
+    list_tree.onclick = function(event) {
+
+      if (event.target.tagName != 'SPAN') {
+        return;
+      }
+
+      let childrenContainer = event.target.parentNode.querySelector('ul');
+      if (!childrenContainer) return; // нет детей
+
+      childrenContainer.hidden = !childrenContainer.hidden;
+    }
+                </script>
+        </section>
+        <section>
+            <h3>
+                Задание 8
+                Создать html-страницу с блоком текста в рамочке.
+                Реализовать возможность изменять размер блока, если зажать
+                мышку в правом нижнем углу и тянуть ее дальше.
+            </h3>
+            
+                <div class="content" id="content">
+                   <div class="content__textarea" id="content__textarea">
+                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi nihil cum
+                     corrupti aliquid vitae quam reiciendis esse doloremque, praesentium
+                     aliquam dolorum sequi assumenda quos eligendi est officiis, molestias
+                     unde nesciunt!
+                     <div class="content__textarea--resizer"></div>
+                   </div>
+                </div>
+                     <script>
+                         // Создать HTML-страницу с блоком текста в рамочке. 
+                // Реализовать возможность изменять размер блока, 
+                // если зажать мышку в правом нижнем углу и тянуть ее дальше.
+                
+                const resDiv = document.getElementById("content__textarea");
+                const resizer = document.querySelector("div.content__textarea--resizer");
+                
+                const initResize = e => {
+                   e.preventDefault;
+                   window.addEventListener("mousemove", startResize);
+                   window.addEventListener("mouseup", stopResize);
+                };
+                
+                const startResize = e => {
+                   resDiv.style.width = (e.clientX - resDiv.offsetLeft) + "px";
+                };
+                const stopResize = e => {
+                   window.removeEventListener('mousemove', startResize);
+                   window.removeEventListener('mouseup', stopResize);
+                };
+                
+                resizer.addEventListener("mousedown", initResize);
+                     </script>
+            
+        </section>
+        <section>
+            <h3>
+                Задание 6
+                Создать html-страницу с несколькими кнопками.
+                При наведении на кнопку, должна появляться подсказка с тек-
+                стом. По умолчанию – подсказка появляется сверху от кнопки. Но
+                если она не помещается сверху от кнопки, тогда отображается снизу.
+            </h3>
+
+            <p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
+  <p>ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя ЛяЛяЛя</p>
+
+  <button data-tooltip="эта подсказка должна быть длиннее, чем элемент">Короткая кнопка</button>
+  <button data-tooltip="HTML<br>подсказка">Ещё кнопка</button>
+
+  <p>Прокрутите страницу, чтобы кнопки оказались у верхнего края, а затем проверьте правильно ли выводятся подсказки.</p>
+            <script>
+let tooltipElem;
+
+document.onmouseover = function(event) {
+  let target = event.target;
+
+  // если у нас есть подсказка...
+  let tooltipHtml = target.dataset.tooltip;
+  if (!tooltipHtml) return;
+
+  // ...создадим элемент для подсказки
+
+  tooltipElem = document.createElement('div');
+  tooltipElem.className = 'tooltip';
+  tooltipElem.innerHTML = tooltipHtml;
+  document.body.append(tooltipElem);
+
+  // спозиционируем его сверху от аннотируемого элемента (top-center)
+  let coords = target.getBoundingClientRect();
+
+  let left = coords.left + (target.offsetWidth - tooltipElem.offsetWidth) / 2;
+  if (left < 0) left = 0; // не заезжать за левый край окна
+
+  let top = coords.top - tooltipElem.offsetHeight - 5;
+  if (top < 0) { // если подсказка не помещается сверху, то отображать её снизу
+	 top = coords.top + target.offsetHeight + 5;
+  }
+
+  tooltipElem.style.left = left + 'px';
+  tooltipElem.style.top = top + 'px';
+};
+
+document.onmouseout = function(e) {
+
+  if (tooltipElem) {
+	 tooltipElem.remove();
+	 tooltipElem = null;
+  }
+
+};
+            </script>
+        </section>
+
+            
+        
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
